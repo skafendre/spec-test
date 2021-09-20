@@ -1,0 +1,4939 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Histovery - Histopad CMS (backend) API",
+    "description": "This is the generated OpenApi specification document.",
+    "termsOfService": "Terms of service placeholder",
+    "contact": {
+      "name": "Eliott",
+      "email": "eliott@histovery.com"
+    },
+    "license": {
+      "name": "UNLICENSED"
+    },
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/storage/raw/{hash}": {
+      "get": {
+        "description": "Return requested StorageObject",
+        "parameters": [
+          {
+            "description": "Hash of requested file. Optionally contains an extension",
+            "name": "hash",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Send back the requested file"
+          }
+        }
+      }
+    },
+    "/storage/{format}/{hash}": {
+      "get": {
+        "description": "Return requested StorageObject format",
+        "parameters": [
+          {
+            "description": "Hash of requested file. Optionally contains an extension",
+            "name": "hash",
+            "in": "path"
+          },
+          {
+            "description": "Format",
+            "name": "format",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "thumbnail",
+                "workformat"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Send back the requested file"
+          }
+        }
+      }
+    },
+    "/storage/": {
+      "post": {
+        "description": "Upload a file to GCP and create a new StorageObject entry.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created StorageObject entry."
+          }
+        }
+      }
+    },
+    "/storage/{hash}": {
+      "delete": {
+        "description": "Delete a StorageObject in DB and GCP",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created StorageObject entry."
+          }
+        }
+      }
+    },
+    "/assets/{id}": {
+      "description": "Asset CRUDController",
+      "put": {
+        "description": "Update a Asset entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Replacing Asset.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AssetInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated Asset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssetOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Patch a Asset entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Patched Asset.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AssetInputOptional"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patched Asset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssetOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a Asset entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted Asset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssetOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assets/": {
+      "get": {
+        "description": "Return all Assets entries. Optional flags are available to filter results.",
+        "parameters": [
+          {
+            "description": "Which attribute to order results from.",
+            "name": "orderAttribute",
+            "in": "query"
+          },
+          {
+            "description": "Direction of ordering,  either ASC or DESC",
+            "name": "orderDirection",
+            "in": "query"
+          },
+          {
+            "description": "Which page to return",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "description": "Size of individual pages.",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "description": "Relations to fetch (eagerLoading)",
+            "name": "relations",
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "lastVersionNumber",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Assets.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a Asset.",
+        "requestBody": {
+          "description": "Asset to add to the DB",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AssetInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created Asset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssetOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assets/upsert": {
+      "post": {
+        "description": "Create a Asset.",
+        "responses": {
+          "200": {
+            "description": "Newly created/updated/deleted graph, entrypoint Asset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssetOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/asset-versions/{id}": {
+      "description": "AssetVersion CRUDController",
+      "put": {
+        "description": "Update a AssetVersion entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Replacing AssetVersion.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AssetVersionInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated AssetVersion.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssetVersionOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Patch a AssetVersion entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Patched AssetVersion.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AssetVersionInputOptional"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patched AssetVersion.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssetVersionOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a AssetVersion entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted AssetVersion.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssetVersionOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/asset-versions/": {
+      "get": {
+        "description": "Return all AssetVersions entries. Optional flags are available to filter results.",
+        "parameters": [
+          {
+            "description": "Which attribute to order results from.",
+            "name": "orderAttribute",
+            "in": "query"
+          },
+          {
+            "description": "Direction of ordering,  either ASC or DESC",
+            "name": "orderDirection",
+            "in": "query"
+          },
+          {
+            "description": "Which page to return",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "description": "Size of individual pages.",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "description": "Relations to fetch (eagerLoading)",
+            "name": "relations",
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "number",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "assetId",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "storageObjectHash",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of AssetVersions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetVersionOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a AssetVersion.",
+        "requestBody": {
+          "description": "AssetVersion to add to the DB",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AssetVersionInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created AssetVersion.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssetVersionOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/asset-versions/upsert": {
+      "post": {
+        "description": "Create a AssetVersion.",
+        "responses": {
+          "200": {
+            "description": "Newly created/updated/deleted graph, entrypoint AssetVersion.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssetVersionOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/action-records/{id}": {
+      "description": "ActionRecord CRUDController",
+      "put": {
+        "description": "Update a ActionRecord entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Replacing ActionRecord.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ActionRecordInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated ActionRecord.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ActionRecordOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Patch a ActionRecord entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Patched ActionRecord.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ActionRecordInputOptional"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patched ActionRecord.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ActionRecordOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a ActionRecord entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted ActionRecord.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ActionRecordOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/action-records/": {
+      "get": {
+        "description": "Return all ActionRecords entries. Optional flags are available to filter results.",
+        "parameters": [
+          {
+            "description": "Which attribute to order results from.",
+            "name": "orderAttribute",
+            "in": "query"
+          },
+          {
+            "description": "Direction of ordering,  either ASC or DESC",
+            "name": "orderDirection",
+            "in": "query"
+          },
+          {
+            "description": "Which page to return",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "description": "Size of individual pages.",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "description": "Relations to fetch (eagerLoading)",
+            "name": "relations",
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "method",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "table",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of ActionRecords.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionRecordOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a ActionRecord.",
+        "requestBody": {
+          "description": "ActionRecord to add to the DB",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ActionRecordInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created ActionRecord.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ActionRecordOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/action-records/upsert": {
+      "post": {
+        "description": "Create a ActionRecord.",
+        "responses": {
+          "200": {
+            "description": "Newly created/updated/deleted graph, entrypoint ActionRecord.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ActionRecordOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/audio-comments/{id}": {
+      "description": "AudioComment CRUDController",
+      "put": {
+        "description": "Update a AudioComment entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Replacing AudioComment.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AudioCommentInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated AudioComment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AudioCommentOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Patch a AudioComment entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Patched AudioComment.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AudioCommentInputOptional"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patched AudioComment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AudioCommentOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a AudioComment entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted AudioComment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AudioCommentOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/audio-comments/": {
+      "get": {
+        "description": "Return all AudioComments entries. Optional flags are available to filter results.",
+        "parameters": [
+          {
+            "description": "Which attribute to order results from.",
+            "name": "orderAttribute",
+            "in": "query"
+          },
+          {
+            "description": "Direction of ordering,  either ASC or DESC",
+            "name": "orderDirection",
+            "in": "query"
+          },
+          {
+            "description": "Which page to return",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "description": "Size of individual pages.",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "description": "Relations to fetch (eagerLoading)",
+            "name": "relations",
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "duration",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "storageObjectHash",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of AudioComments.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AudioCommentOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a AudioComment.",
+        "requestBody": {
+          "description": "AudioComment to add to the DB",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AudioCommentInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created AudioComment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AudioCommentOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/audio-comments/upsert": {
+      "post": {
+        "description": "Create a AudioComment.",
+        "responses": {
+          "200": {
+            "description": "Newly created/updated/deleted graph, entrypoint AudioComment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AudioCommentOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/builds/{id}": {
+      "description": "Build CRUDController",
+      "put": {
+        "description": "Update a Build entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Replacing Build.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BuildInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated Build.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BuildOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Patch a Build entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Patched Build.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BuildInputOptional"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patched Build.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BuildOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a Build entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted Build.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BuildOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/builds/": {
+      "get": {
+        "description": "Return all Builds entries. Optional flags are available to filter results.",
+        "parameters": [
+          {
+            "description": "Which attribute to order results from.",
+            "name": "orderAttribute",
+            "in": "query"
+          },
+          {
+            "description": "Direction of ordering,  either ASC or DESC",
+            "name": "orderDirection",
+            "in": "query"
+          },
+          {
+            "description": "Which page to return",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "description": "Size of individual pages.",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "description": "Relations to fetch (eagerLoading)",
+            "name": "relations",
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "buildStatus",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "deploymentUrl",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "projectStateId",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Builds.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuildOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a Build.",
+        "requestBody": {
+          "description": "Build to add to the DB",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BuildInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created Build.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BuildOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/builds/upsert": {
+      "post": {
+        "description": "Create a Build.",
+        "responses": {
+          "200": {
+            "description": "Newly created/updated/deleted graph, entrypoint Build.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BuildOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chapters/{id}": {
+      "description": "Chapter CRUDController",
+      "put": {
+        "description": "Update a Chapter entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Replacing Chapter.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ChapterInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated Chapter.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChapterOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Patch a Chapter entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Patched Chapter.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ChapterInputOptional"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patched Chapter.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChapterOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a Chapter entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted Chapter.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChapterOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chapters/": {
+      "get": {
+        "description": "Return all Chapters entries. Optional flags are available to filter results.",
+        "parameters": [
+          {
+            "description": "Which attribute to order results from.",
+            "name": "orderAttribute",
+            "in": "query"
+          },
+          {
+            "description": "Direction of ordering,  either ASC or DESC",
+            "name": "orderDirection",
+            "in": "query"
+          },
+          {
+            "description": "Which page to return",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "description": "Size of individual pages.",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "description": "Relations to fetch (eagerLoading)",
+            "name": "relations",
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "slot",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "storyId",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "sceneId",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "titleId",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Chapters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChapterOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a Chapter.",
+        "requestBody": {
+          "description": "Chapter to add to the DB",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ChapterInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created Chapter.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChapterOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chapters/upsert": {
+      "post": {
+        "description": "Create a Chapter.",
+        "responses": {
+          "200": {
+            "description": "Newly created/updated/deleted graph, entrypoint Chapter.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChapterOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "description": "Product CRUDController",
+      "put": {
+        "description": "Update a Product entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Replacing Product.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ProductInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated Product.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Patch a Product entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Patched Product.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ProductInputOptional"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patched Product.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a Product entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted Product.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/": {
+      "get": {
+        "description": "Return all Products entries. Optional flags are available to filter results.",
+        "parameters": [
+          {
+            "description": "Which attribute to order results from.",
+            "name": "orderAttribute",
+            "in": "query"
+          },
+          {
+            "description": "Direction of ordering,  either ASC or DESC",
+            "name": "orderDirection",
+            "in": "query"
+          },
+          {
+            "description": "Which page to return",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "description": "Size of individual pages.",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "description": "Relations to fetch (eagerLoading)",
+            "name": "relations",
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Products.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a Product.",
+        "requestBody": {
+          "description": "Product to add to the DB",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ProductInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created Product.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/upsert": {
+      "post": {
+        "description": "Create a Product.",
+        "responses": {
+          "200": {
+            "description": "Newly created/updated/deleted graph, entrypoint Product.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{id}": {
+      "description": "Project CRUDController",
+      "put": {
+        "description": "Update a Project entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Replacing Project.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ProjectInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated Project.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Patch a Project entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Patched Project.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ProjectInputOptional"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patched Project.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a Project entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted Project.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/": {
+      "get": {
+        "description": "Return all Projects entries. Optional flags are available to filter results.",
+        "parameters": [
+          {
+            "description": "Which attribute to order results from.",
+            "name": "orderAttribute",
+            "in": "query"
+          },
+          {
+            "description": "Direction of ordering,  either ASC or DESC",
+            "name": "orderDirection",
+            "in": "query"
+          },
+          {
+            "description": "Which page to return",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "description": "Size of individual pages.",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "description": "Relations to fetch (eagerLoading)",
+            "name": "relations",
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "site",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Projects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a Project.",
+        "requestBody": {
+          "description": "Project to add to the DB",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ProjectInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created Project.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/upsert": {
+      "post": {
+        "description": "Create a Project.",
+        "responses": {
+          "200": {
+            "description": "Newly created/updated/deleted graph, entrypoint Project.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/routes/{id}": {
+      "description": "Route CRUDController",
+      "put": {
+        "description": "Update a Route entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Replacing Route.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RouteInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated Route.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RouteOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Patch a Route entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Patched Route.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RouteInputOptional"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patched Route.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RouteOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a Route entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted Route.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RouteOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/routes/": {
+      "get": {
+        "description": "Return all Routes entries. Optional flags are available to filter results.",
+        "parameters": [
+          {
+            "description": "Which attribute to order results from.",
+            "name": "orderAttribute",
+            "in": "query"
+          },
+          {
+            "description": "Direction of ordering,  either ASC or DESC",
+            "name": "orderDirection",
+            "in": "query"
+          },
+          {
+            "description": "Which page to return",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "description": "Size of individual pages.",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "description": "Relations to fetch (eagerLoading)",
+            "name": "relations",
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "projectId",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Routes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RouteOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a Route.",
+        "requestBody": {
+          "description": "Route to add to the DB",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RouteInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created Route.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RouteOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/routes/upsert": {
+      "post": {
+        "description": "Create a Route.",
+        "responses": {
+          "200": {
+            "description": "Newly created/updated/deleted graph, entrypoint Route.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RouteOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/route-steps/{id}": {
+      "description": "RouteStep CRUDController",
+      "put": {
+        "description": "Update a RouteStep entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Replacing RouteStep.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RouteStepInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated RouteStep.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RouteStepOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Patch a RouteStep entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Patched RouteStep.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RouteStepInputOptional"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patched RouteStep.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RouteStepOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a RouteStep entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted RouteStep.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RouteStepOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/route-steps/": {
+      "get": {
+        "description": "Return all RouteSteps entries. Optional flags are available to filter results.",
+        "parameters": [
+          {
+            "description": "Which attribute to order results from.",
+            "name": "orderAttribute",
+            "in": "query"
+          },
+          {
+            "description": "Direction of ordering,  either ASC or DESC",
+            "name": "orderDirection",
+            "in": "query"
+          },
+          {
+            "description": "Which page to return",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "description": "Size of individual pages.",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "description": "Relations to fetch (eagerLoading)",
+            "name": "relations",
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "slot",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "storyId",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "routeId",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of RouteSteps.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RouteStepOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a RouteStep.",
+        "requestBody": {
+          "description": "RouteStep to add to the DB",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RouteStepInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created RouteStep.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RouteStepOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/route-steps/upsert": {
+      "post": {
+        "description": "Create a RouteStep.",
+        "responses": {
+          "200": {
+            "description": "Newly created/updated/deleted graph, entrypoint RouteStep.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RouteStepOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/localization-destinations/{id}": {
+      "description": "LocalizationDestination CRUDController",
+      "put": {
+        "description": "Update a LocalizationDestination entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Replacing LocalizationDestination.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/LocalizationDestinationInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated LocalizationDestination.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocalizationDestinationOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Patch a LocalizationDestination entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Patched LocalizationDestination.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/LocalizationDestinationInputOptional"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patched LocalizationDestination.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocalizationDestinationOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a LocalizationDestination entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted LocalizationDestination.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocalizationDestinationOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/localization-destinations/": {
+      "get": {
+        "description": "Return all LocalizationDestinations entries. Optional flags are available to filter results.",
+        "parameters": [
+          {
+            "description": "Which attribute to order results from.",
+            "name": "orderAttribute",
+            "in": "query"
+          },
+          {
+            "description": "Direction of ordering,  either ASC or DESC",
+            "name": "orderDirection",
+            "in": "query"
+          },
+          {
+            "description": "Which page to return",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "description": "Size of individual pages.",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "description": "Relations to fetch (eagerLoading)",
+            "name": "relations",
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "label",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of LocalizationDestinations.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocalizationDestinationOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a LocalizationDestination.",
+        "requestBody": {
+          "description": "LocalizationDestination to add to the DB",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/LocalizationDestinationInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created LocalizationDestination.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocalizationDestinationOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/localization-destinations/upsert": {
+      "post": {
+        "description": "Create a LocalizationDestination.",
+        "responses": {
+          "200": {
+            "description": "Newly created/updated/deleted graph, entrypoint LocalizationDestination.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocalizationDestinationOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/localization-keys/{id}": {
+      "description": "LocalizationKey CRUDController",
+      "put": {
+        "description": "Update a LocalizationKey entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Replacing LocalizationKey.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/LocalizationKeyInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated LocalizationKey.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocalizationKeyOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Patch a LocalizationKey entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Patched LocalizationKey.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/LocalizationKeyInputOptional"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patched LocalizationKey.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocalizationKeyOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a LocalizationKey entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted LocalizationKey.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocalizationKeyOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/localization-keys/": {
+      "get": {
+        "description": "Return all LocalizationKeys entries. Optional flags are available to filter results.",
+        "parameters": [
+          {
+            "description": "Which attribute to order results from.",
+            "name": "orderAttribute",
+            "in": "query"
+          },
+          {
+            "description": "Direction of ordering,  either ASC or DESC",
+            "name": "orderDirection",
+            "in": "query"
+          },
+          {
+            "description": "Which page to return",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "description": "Size of individual pages.",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "description": "Relations to fetch (eagerLoading)",
+            "name": "relations",
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "localizationKeyId",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of LocalizationKeys.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocalizationKeyOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a LocalizationKey.",
+        "requestBody": {
+          "description": "LocalizationKey to add to the DB",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/LocalizationKeyInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created LocalizationKey.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocalizationKeyOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/localization-keys/upsert": {
+      "post": {
+        "description": "Create a LocalizationKey.",
+        "responses": {
+          "200": {
+            "description": "Newly created/updated/deleted graph, entrypoint LocalizationKey.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocalizationKeyOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/scenes/{id}": {
+      "description": "Scene CRUDController",
+      "put": {
+        "description": "Update a Scene entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Replacing Scene.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SceneInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated Scene.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SceneOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Patch a Scene entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Patched Scene.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SceneInputOptional"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patched Scene.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SceneOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a Scene entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted Scene.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SceneOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/scenes/": {
+      "get": {
+        "description": "Return all Scenes entries. Optional flags are available to filter results.",
+        "parameters": [
+          {
+            "description": "Which attribute to order results from.",
+            "name": "orderAttribute",
+            "in": "query"
+          },
+          {
+            "description": "Direction of ordering,  either ASC or DESC",
+            "name": "orderDirection",
+            "in": "query"
+          },
+          {
+            "description": "Which page to return",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "description": "Size of individual pages.",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "description": "Relations to fetch (eagerLoading)",
+            "name": "relations",
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "configId",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Scenes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SceneOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a Scene.",
+        "requestBody": {
+          "description": "Scene to add to the DB",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SceneInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created Scene.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SceneOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/scenes/upsert": {
+      "post": {
+        "description": "Create a Scene.",
+        "responses": {
+          "200": {
+            "description": "Newly created/updated/deleted graph, entrypoint Scene.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SceneOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sections/{id}": {
+      "description": "Section CRUDController",
+      "put": {
+        "description": "Update a Section entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Replacing Section.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SectionInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated Section.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SectionOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Patch a Section entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Patched Section.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SectionInputOptional"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patched Section.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SectionOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a Section entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted Section.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SectionOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sections/": {
+      "get": {
+        "description": "Return all Sections entries. Optional flags are available to filter results.",
+        "parameters": [
+          {
+            "description": "Which attribute to order results from.",
+            "name": "orderAttribute",
+            "in": "query"
+          },
+          {
+            "description": "Direction of ordering,  either ASC or DESC",
+            "name": "orderDirection",
+            "in": "query"
+          },
+          {
+            "description": "Which page to return",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "description": "Size of individual pages.",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "description": "Relations to fetch (eagerLoading)",
+            "name": "relations",
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "slot",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "chapterId",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Sections.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SectionOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a Section.",
+        "requestBody": {
+          "description": "Section to add to the DB",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SectionInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created Section.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SectionOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sections/upsert": {
+      "post": {
+        "description": "Create a Section.",
+        "responses": {
+          "200": {
+            "description": "Newly created/updated/deleted graph, entrypoint Section.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SectionOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/scene-snapshots/{id}": {
+      "description": "SceneSnapshot CRUDController",
+      "put": {
+        "description": "Update a SceneSnapshot entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Replacing SceneSnapshot.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SceneSnapshotInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated SceneSnapshot.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SceneSnapshotOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Patch a SceneSnapshot entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Patched SceneSnapshot.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SceneSnapshotInputOptional"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patched SceneSnapshot.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SceneSnapshotOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a SceneSnapshot entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted SceneSnapshot.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SceneSnapshotOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/scene-snapshots/": {
+      "get": {
+        "description": "Return all SceneSnapshots entries. Optional flags are available to filter results.",
+        "parameters": [
+          {
+            "description": "Which attribute to order results from.",
+            "name": "orderAttribute",
+            "in": "query"
+          },
+          {
+            "description": "Direction of ordering,  either ASC or DESC",
+            "name": "orderDirection",
+            "in": "query"
+          },
+          {
+            "description": "Which page to return",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "description": "Size of individual pages.",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "description": "Relations to fetch (eagerLoading)",
+            "name": "relations",
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "delta",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "sceneId",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of SceneSnapshots.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SceneSnapshotOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a SceneSnapshot.",
+        "requestBody": {
+          "description": "SceneSnapshot to add to the DB",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SceneSnapshotInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created SceneSnapshot.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SceneSnapshotOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/scene-snapshots/upsert": {
+      "post": {
+        "description": "Create a SceneSnapshot.",
+        "responses": {
+          "200": {
+            "description": "Newly created/updated/deleted graph, entrypoint SceneSnapshot.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SceneSnapshotOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/section-contents/{id}": {
+      "description": "SectionContent CRUDController",
+      "put": {
+        "description": "Update a SectionContent entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Replacing SectionContent.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SectionContentInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated SectionContent.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SectionContentOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Patch a SectionContent entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Patched SectionContent.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SectionContentInputOptional"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patched SectionContent.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SectionContentOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a SectionContent entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted SectionContent.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SectionContentOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/section-contents/": {
+      "get": {
+        "description": "Return all SectionContents entries. Optional flags are available to filter results.",
+        "parameters": [
+          {
+            "description": "Which attribute to order results from.",
+            "name": "orderAttribute",
+            "in": "query"
+          },
+          {
+            "description": "Direction of ordering,  either ASC or DESC",
+            "name": "orderDirection",
+            "in": "query"
+          },
+          {
+            "description": "Which page to return",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "description": "Size of individual pages.",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "description": "Relations to fetch (eagerLoading)",
+            "name": "relations",
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "slot",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "credits",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "duration",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "sectionId",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "localizationKeyId",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "assetVersionId",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "descriptionId",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of SectionContents.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SectionContentOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a SectionContent.",
+        "requestBody": {
+          "description": "SectionContent to add to the DB",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SectionContentInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created SectionContent.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SectionContentOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/section-contents/upsert": {
+      "post": {
+        "description": "Create a SectionContent.",
+        "responses": {
+          "200": {
+            "description": "Newly created/updated/deleted graph, entrypoint SectionContent.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SectionContentOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stories/{id}": {
+      "description": "Story CRUDController",
+      "put": {
+        "description": "Update a Story entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Replacing Story.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/StoryInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated Story.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoryOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Patch a Story entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "Patched Story.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/StoryInputOptional"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patched Story.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoryOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a Story entry.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted Story.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoryOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stories/": {
+      "get": {
+        "description": "Return all Storys entries. Optional flags are available to filter results.",
+        "parameters": [
+          {
+            "description": "Which attribute to order results from.",
+            "name": "orderAttribute",
+            "in": "query"
+          },
+          {
+            "description": "Direction of ordering,  either ASC or DESC",
+            "name": "orderDirection",
+            "in": "query"
+          },
+          {
+            "description": "Which page to return",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "description": "Size of individual pages.",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "description": "Relations to fetch (eagerLoading)",
+            "name": "relations",
+            "in": "query"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "projectId",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "titleId",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Storys.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoryOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a Story.",
+        "requestBody": {
+          "description": "Story to add to the DB",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/StoryInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Newly created Story.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoryOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stories/upsert": {
+      "post": {
+        "description": "Create a Story.",
+        "responses": {
+          "200": {
+            "description": "Newly created/updated/deleted graph, entrypoint Story.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoryOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "CRUDController",
+      "description": "CRUDController related operations."
+    },
+    {
+      "name": "CustomController",
+      "description": "CustomController related operations."
+    }
+  ],
+  "components": {
+    "schemas": {
+      "AssetInput": {
+        "type": "object",
+        "required": [
+          "name",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "lastVersionNumber": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "type"
+          }
+        }
+      },
+      "AssetInputOptional": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "lastVersionNumber": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "type"
+          }
+        }
+      },
+      "AssetOutput": {
+        "type": "object",
+        "required": [
+          "name",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "lastVersionNumber": {},
+          "type": {
+            "type": "type"
+          },
+          "latestAssetVersion": {},
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AssetVersionInput": {
+        "type": "object",
+        "required": [
+          "number"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "number": {
+            "type": "integer"
+          },
+          "assetId": {
+            "type": "number"
+          },
+          "storageObjectHash": {
+            "type": "string"
+          }
+        }
+      },
+      "AssetVersionInputOptional": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "number": {
+            "type": "integer"
+          },
+          "assetId": {
+            "type": "number"
+          },
+          "storageObjectHash": {
+            "type": "string"
+          }
+        }
+      },
+      "AssetVersionOutput": {
+        "type": "object",
+        "required": [
+          "number"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "number": {
+            "type": "integer"
+          },
+          "assetId": {
+            "type": "number"
+          },
+          "storageObjectHash": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ActionRecordInput": {
+        "type": "object",
+        "required": [
+          "table",
+          "userId",
+          "method"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "userId": {
+            "type": "integer"
+          },
+          "method": {
+            "type": "string"
+          },
+          "table": {
+            "type": "string"
+          }
+        }
+      },
+      "ActionRecordInputOptional": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "userId": {
+            "type": "integer"
+          },
+          "method": {
+            "type": "string"
+          },
+          "table": {
+            "type": "string"
+          }
+        }
+      },
+      "ActionRecordOutput": {
+        "type": "object",
+        "required": [
+          "table",
+          "userId",
+          "method"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "userId": {
+            "type": "integer"
+          },
+          "method": {
+            "type": "string"
+          },
+          "table": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AudioCommentInput": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "integer"
+          },
+          "storageObjectHash": {
+            "type": "string"
+          }
+        }
+      },
+      "AudioCommentInputOptional": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "integer"
+          },
+          "storageObjectHash": {
+            "type": "string"
+          }
+        }
+      },
+      "AudioCommentOutput": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "integer"
+          },
+          "storageObjectHash": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "BuildInput": {
+        "type": "object",
+        "required": [
+          "buildStatus",
+          "projectStateId"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "buildStatus": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "ko",
+              "pending",
+              "in_progress",
+              "cancelled",
+              "none"
+            ],
+            "default": "wip"
+          },
+          "deploymentUrl": {
+            "type": "string"
+          },
+          "projectStateId": {
+            "type": "integer"
+          }
+        }
+      },
+      "BuildInputOptional": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "buildStatus": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "ko",
+              "pending",
+              "in_progress",
+              "cancelled",
+              "none"
+            ],
+            "default": "wip"
+          },
+          "deploymentUrl": {
+            "type": "string"
+          },
+          "projectStateId": {
+            "type": "integer"
+          }
+        }
+      },
+      "BuildOutput": {
+        "type": "object",
+        "required": [
+          "buildStatus",
+          "projectStateId"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "buildStatus": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "ko",
+              "pending",
+              "in_progress",
+              "cancelled",
+              "none"
+            ],
+            "default": "wip"
+          },
+          "deploymentUrl": {
+            "type": "string"
+          },
+          "projectStateId": {
+            "type": "integer"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ChapterInput": {
+        "type": "object",
+        "required": [
+          "slot"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "slot": {
+            "type": "integer"
+          },
+          "storyId": {
+            "type": "integer"
+          },
+          "sceneId": {
+            "type": "integer"
+          },
+          "titleId": {
+            "type": "integer"
+          }
+        }
+      },
+      "ChapterInputOptional": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "slot": {
+            "type": "integer"
+          },
+          "storyId": {
+            "type": "integer"
+          },
+          "sceneId": {
+            "type": "integer"
+          },
+          "titleId": {
+            "type": "integer"
+          }
+        }
+      },
+      "ChapterOutput": {
+        "type": "object",
+        "required": [
+          "slot"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "slot": {
+            "type": "integer"
+          },
+          "storyId": {
+            "type": "integer"
+          },
+          "sceneId": {
+            "type": "integer"
+          },
+          "titleId": {
+            "type": "integer"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ProductInput": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "ProductInputOptional": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "ProductOutput": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ProjectInput": {
+        "type": "object",
+        "required": [
+          "name",
+          "site"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "site": {
+            "type": "string"
+          }
+        }
+      },
+      "ProjectInputOptional": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "site": {
+            "type": "string"
+          }
+        }
+      },
+      "ProjectOutput": {
+        "type": "object",
+        "required": [
+          "name",
+          "site"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "site": {
+            "type": "string"
+          },
+          "currentVersion": {},
+          "published": {},
+          "gold": {},
+          "silver": {},
+          "wip": {},
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "RouteInput": {
+        "type": "object",
+        "required": [
+          "title",
+          "projectId"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "projectId": {
+            "type": "integer"
+          }
+        }
+      },
+      "RouteInputOptional": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "projectId": {
+            "type": "integer"
+          }
+        }
+      },
+      "RouteOutput": {
+        "type": "object",
+        "required": [
+          "title",
+          "projectId"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "projectId": {
+            "type": "integer"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "RouteStepInput": {
+        "type": "object",
+        "required": [
+          "slot",
+          "storyId",
+          "routeId"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "slot": {
+            "type": "string"
+          },
+          "storyId": {
+            "type": "string"
+          },
+          "routeId": {
+            "type": "string"
+          }
+        }
+      },
+      "RouteStepInputOptional": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "slot": {
+            "type": "string"
+          },
+          "storyId": {
+            "type": "string"
+          },
+          "routeId": {
+            "type": "string"
+          }
+        }
+      },
+      "RouteStepOutput": {
+        "type": "object",
+        "required": [
+          "slot",
+          "storyId",
+          "routeId"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "slot": {
+            "type": "string"
+          },
+          "storyId": {
+            "type": "string"
+          },
+          "routeId": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "LocalizationDestinationInput": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          }
+        }
+      },
+      "LocalizationDestinationInputOptional": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          }
+        }
+      },
+      "LocalizationDestinationOutput": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "LocalizationKeyInput": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "localizationKeyId": {
+            "type": "integer"
+          }
+        }
+      },
+      "LocalizationKeyInputOptional": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "localizationKeyId": {
+            "type": "integer"
+          }
+        }
+      },
+      "LocalizationKeyOutput": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "localizationKeyId": {
+            "type": "integer"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SceneInput": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "configId": {
+            "type": "integer"
+          }
+        }
+      },
+      "SceneInputOptional": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "configId": {
+            "type": "integer"
+          }
+        }
+      },
+      "SceneOutput": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "configId": {
+            "type": "integer"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SectionInput": {
+        "type": "object",
+        "required": [
+          "slot",
+          "chapterId"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "slot": {
+            "type": "integer"
+          },
+          "chapterId": {
+            "type": "integer"
+          }
+        }
+      },
+      "SectionInputOptional": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "slot": {
+            "type": "integer"
+          },
+          "chapterId": {
+            "type": "integer"
+          }
+        }
+      },
+      "SectionOutput": {
+        "type": "object",
+        "required": [
+          "slot",
+          "chapterId"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "slot": {
+            "type": "integer"
+          },
+          "chapterId": {
+            "type": "integer"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SceneSnapshotInput": {
+        "type": "object",
+        "required": [
+          "name",
+          "delta"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "delta": {
+            "type": "object"
+          },
+          "sceneId": {
+            "type": "integer"
+          }
+        }
+      },
+      "SceneSnapshotInputOptional": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "delta": {
+            "type": "object"
+          },
+          "sceneId": {
+            "type": "integer"
+          }
+        }
+      },
+      "SceneSnapshotOutput": {
+        "type": "object",
+        "required": [
+          "name",
+          "delta"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "delta": {
+            "type": "object"
+          },
+          "sceneId": {
+            "type": "integer"
+          },
+          "previewThumbnailUrl": {},
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SectionContentInput": {
+        "type": "object",
+        "required": [
+          "slot",
+          "type",
+          "sectionId"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "slot": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "string"
+          },
+          "credits": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "integer"
+          },
+          "sectionId": {
+            "type": "integer"
+          },
+          "localizationKeyId": {
+            "type": "integer"
+          },
+          "assetVersionId": {
+            "type": "integer"
+          },
+          "descriptionId": {
+            "type": "integer"
+          }
+        }
+      },
+      "SectionContentInputOptional": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "slot": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "string"
+          },
+          "credits": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "integer"
+          },
+          "sectionId": {
+            "type": "integer"
+          },
+          "localizationKeyId": {
+            "type": "integer"
+          },
+          "assetVersionId": {
+            "type": "integer"
+          },
+          "descriptionId": {
+            "type": "integer"
+          }
+        }
+      },
+      "SectionContentOutput": {
+        "type": "object",
+        "required": [
+          "slot",
+          "type",
+          "sectionId"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "slot": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "string"
+          },
+          "credits": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "integer"
+          },
+          "sectionId": {
+            "type": "integer"
+          },
+          "localizationKeyId": {
+            "type": "integer"
+          },
+          "assetVersionId": {
+            "type": "integer"
+          },
+          "descriptionId": {
+            "type": "integer"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "StoryInput": {
+        "type": "object",
+        "required": [
+          "projectId"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "projectId": {
+            "type": "integer"
+          },
+          "titleId": {
+            "type": "integer"
+          }
+        }
+      },
+      "StoryInputOptional": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "projectId": {
+            "type": "integer"
+          },
+          "titleId": {
+            "type": "integer"
+          }
+        }
+      },
+      "StoryOutput": {
+        "type": "object",
+        "required": [
+          "projectId"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "projectId": {
+            "type": "integer"
+          },
+          "titleId": {
+            "type": "integer"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}
